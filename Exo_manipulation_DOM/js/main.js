@@ -1,6 +1,6 @@
 
 function shuffleChildren(parent) {
-    
+
     let children = parent.children
     let i = children.length
     let k
@@ -37,21 +37,27 @@ for (let i = 1; i <= 10; i++) {
 
     newBox.addEventListener('click', function () {
 
-        
-        
         if (i == nb) {
-            newBox.classList.toggle('box-clicked');
-            nb++  
-            console.log(nb)
-            if (nb == board.children.length){ 
-                alert("gagné")
+            newBox.classList.toggle('box-clicked')
+            //1
+            if (nb == board.children.length) {
+                alert("Victoire !")
             }
-        } else {
-            alert("perdu")
-            window.location.href = window.location.href
+        nb++
         }
-        
-        
+        //2
+        else if (i > nb) {
+            alert("Trop élevé !")
+            nb = 1
+            board.querySelectorAll(".box-clicked").forEach(function (el) {
+                el.classList.remove("box-clicked")
+            })
+
+        //3
+        } else {
+            alert("Déjà cliqué")
+        }
+
 
     })
 
