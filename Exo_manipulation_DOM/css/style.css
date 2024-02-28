@@ -1,0 +1,64 @@
+
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  } 
+
+
+
+.box {
+    width: 1.75em;
+    height: 1.75em;
+    border: 1px solid black;
+    border-radius: 50px;
+    background-color: rgb(244,148,97);
+    font-size: 3em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 10px 0.6em;
+    animation: appear 1s;
+    border-radius: 6px;
+}
+
+#board {
+    width: 70%;
+
+    padding: 1em;
+    border: 2px solid black;
+    border-radius: 50px;
+    height: 100%;
+    background-color: rgb(159,24,94);
+    display: flex;
+    flex-wrap: wrap;
+}
+
+@media only screen and (max-device-width: 768px) {
+    
+    #board {
+        width: 100%;
+    }
+
+    .box {
+        margin: 1px;
+    }
+
+}
+
+.box-clicked {
+    background-color: #ccc;
+    color: #aaa;
+
+}
+
+@keyframes appear{
+    from {
+        transform: scale(0) rotate(180deg)
+
+    }
+    to {
+        transform: scale(1) rotate(0deg)
+    }
+}
