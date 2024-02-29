@@ -22,6 +22,7 @@ body {
     animation: appear 1s;
     border-radius: 6px;
     cursor: pointer;
+    transition: background-color 0.8s, color 0.8s, transform 0.8s;
 }
 
 #board {
@@ -51,7 +52,7 @@ body {
 .box-clicked {
     background-color: #ccc;
     color: #aaa;
-
+    transform: scale(0.8);
 }
 
 @keyframes appear{
@@ -62,4 +63,20 @@ body {
     to {
         transform: scale(1) rotate(0deg)
     }
+}
+
+.error {
+    color: red;
+    background-color: rgb(255, 137, 137);
+}
+
+.sucess {
+    color: rgb(164, 255, 28);
+    background-color: rgb(220, 255, 167);
+}
+
+.notice {
+    color: purple;
+    background-color: rgb(248, 123, 248);
+    cursor: not-allowed;
 }
