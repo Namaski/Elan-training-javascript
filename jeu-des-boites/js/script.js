@@ -1,14 +1,13 @@
-
 /********************************************************* START TIMER *******************************************************/
 
 function startTimer() { // fonction pour start un timer
 
 
-    let milisecondes = timer //converti le timer en milisecondes
+    milisecondes = timer % 100; //converti le timer en milisecondes
 
 
     if (milisecondes < 10) {
-        milisecondes = "0" + timer
+        milisecondes = "0" + milisecondes
     }
 
 
@@ -46,7 +45,7 @@ function shuffleChildren(parent) { // fonction pour mélanger les boites de mani
 
     while (i-- > 0) {
 
-        k = Math.floor((Math.random() * i)+1)
+        k = Math.floor((Math.random() * i) + 1)
 
         temp = children[k]
 
@@ -55,10 +54,6 @@ function shuffleChildren(parent) { // fonction pour mélanger les boites de mani
         parent.appendChild(temp) // marche car cela ne prend pas la valeur en tant que tel mais en tant que pointeur pour modifier l'ordre et donc prendre l'élément en retirant ce derniers
 
     }
-
-
-
-
 }
 
 /********************************************************* SHOW REACTION *******************************************************/
@@ -72,40 +67,29 @@ function showReaction(type, clickedBox) { //Fonction pour appliquer la classe so
     }
 }
 
+/********************************************************* CLEAR BOARD *******************************************************/
 
-/********************************************************* SHUFFLE CHILDREN *******************************************************/
+function clearBoard() {
 
-// function shuffleNotClicked(parent) { // fonction pour mélanger les boites de manière aléatoire et unique
+    const board = document.querySelector('#board')
 
-//     let children = parent.querySelectorAll('.not-clicked'); // Sélectionne les boîtes qui n'ont pas été cliquées
-//     let i = children.length;
-//     let k;
-//     let temp;
-
-//     while (i-- > 0) {
-//         k = Math.floor(Math.random() * i);
-
-//         temp = children[k];
-
-//         temp.style.animation = 'appear 0.5s'
-
-//         children[k] = children[i]
-
-//         parent.appendChild(temp); // marche car cela ne prend pas la valeur en tant que tel mais en tant que pointeur pour modifier l'ordre et donc prendre l'élément en retirant ce derniers
-
-
-
-
-//     }
-//     console.log(board.querySelectorAll('.not-clicked'))
-// }
-
+    while (board.firstChild) {
+        board.removeChild(board.firstChild)
+    }
+}
 
 /********************************************************* GAME START *******************************************************/
 
 function gameStart() {
+    nb = 1
+    clearInterval(refreshIntervalId)
+    resetTimer()
+    clearBoard()
 
-    let refreshIntervalId = setInterval(startTimer, 10)
+    setTimeout(function () { // au bout de 0.3s le timer démarre
+        refreshIntervalId = setInterval(startTimer, 10)
+    }, 300);
+
 
     for (let i = 1; i <= boxNumber; i++) {
 
@@ -118,70 +102,59 @@ function gameStart() {
             if (i == nb) { // si le joueur à cliqué sur la bonne boite
                 // newBox.classList.remove("not-clicked")
                 newBox.classList.add('box-clicked') // ajout de la classe box-clicked à newBox
-
-                shuffleChildren(board)
+                shuffleChildren(board) //mélange les boites
 
                 //1
                 if (nb == board.children.length) { // vérifie que le joueur à eu toutes les boites
+                    
                     board.querySelectorAll('.box').forEach(function (el) {
                         showReaction("sucess", el)
                         clearInterval(refreshIntervalId) //stop le timer
-                    })  // ajout de la classe newBox
+                    })
+
+                    const newScore = score.cloneNode()
+                    let newTime = timer
+
+                    if (newTime < bestTime) {
+                        bestTime = newTime // mettre à jour le meilleur temps avec le nouveau temps
+                    }
+
+                    newScore.innerText = secondes + ":" + milisecondes
+
+                    // Récupérer tous les scores actuels
+                    const currentScores = Array.from(scoreBackground.children);
+                    
+                    // Ajouter le nouveau score à la liste
+                    currentScores.push(newScore);
+
+                    // Trier les scores par temps décroissant
+                    currentScores.sort(function(a, b) {
+                        const timeA = a.innerText.split(":").map(Number);
+                        const timeB = b.innerText.split(":").map(Number);
+                        if (timeA[0] !== timeB[0]) {
+                            return timeA[0] - timeB[0];
+                        } else {
+                            return timeA[1] - timeB[1];
+                        }
+                    });
+
+                    // Effacer les scores existants
+                    scoreBackground.innerHTML = '';
+
+                    // Ajouter les scores triés au DOM
+                    currentScores.forEach(function(scoreNode) {
+                        scoreBackground.appendChild(scoreNode);
+                    });
                 }
                 nb++
-            }
-            //2
-            else if (i > nb) { // si il a cliqué sur une boite plus grande
+                //2 
+            } else if (i > nb) { // si il a cliqué sur une boite plus grande
                 showReaction("error", newBox) // ajout de la classe error à newBox pendant 0.8s
-                nb = 1
-                board.querySelectorAll(".box-clicked").forEach(function (el) { //enleve la classe box-clicked
-
-                    el.classList.remove("box-clicked")
-                    clearInterval(refreshIntervalId) // Stop le timer
-                    
-                    setTimeout(function () {
-                        resetTimer()
-                        refreshIntervalId = setInterval(startTimer, 10) 
-                        shuffleChildren(board)
-                    }, 800);
-                })
 
                 //3 si il a cliqué sur une boite déjà cliqué
             } else {
                 showReaction("notice", newBox) //Ajout de la classe notice à newBox pendant 0.8s
             }
-
-
         })
-
-
     }
 }
-
-
-/********************************************************* DOM *******************************************************/
-
-/*** BOARD & BOX & TIMERCONTAINER & STARTBUTTON  ******/
-const board = document.querySelector("#board") // Attribution de l'Id HTML dans board
-const box = document.createElement("div") // Création de la div dans le document (en mémoire)
-box.classList = "box" // Ajout de la classe box dans la div box (variable pointe vers la div)
-// box.classList.add("not-clicked")
-
-const startButton = document.querySelector("start-button")
-const timerContainer = document.createElement("div")
-timerContainer.classList = "timer-container"
-document.querySelector('header').appendChild(timerContainer)
-
-
-/********************************************************* VARIABLES *******************************************************/
-
-
-let timer = 0 // initialisation du timer pour utilisé dans la fonction startTimer
-let secondes = 0 // initialisation des secondes
-let nb = 1 // initialisation du score (ici c'est la boite voulue) pour controler l'état du jeu
-let boxNumber = 10 /* prompt("nombre de boites ? : ") */
-
-
-
-
-shuffleChildren(board)
