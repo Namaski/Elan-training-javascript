@@ -1,0 +1,15 @@
+- créer une liste de symbole
+
+- Permettre à deux joueurs de choisir un symbole chacun leurs tours
+
+- Créer un zone dynamique 3*3 qui place le symbole choisi lors d'un click 
+
+- Permettre d'alterner la main entre joueur 1 et joueur 2 avec une indication et un changement du symbole selon le tour du joueur
+
+- lorsqu'une ligne horizontal, verticale ou diagonale de trois symboles iddentique est créer arrêter le jeu
+
+- Lorsque toutes les cases sont remplis avec un symbole arrêter le jeu
+
+- afficher une indication visuel pour savoir si le joueur 1 ou le joueur 2 a gagné ou si il y a match nul
+
+- Permettre de rejouer après une victoire ou malnul
