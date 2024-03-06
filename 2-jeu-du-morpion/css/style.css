@@ -1,7 +1,10 @@
+/**************** GENERAL ****************/
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    font-family: "Inter", sans-serif;
 }
 
 body {
@@ -11,71 +14,254 @@ body {
     background-color: rgba(190, 132, 162, 0.4);
 }
 
+
+/***************BOARD-BACKGROUND  ***********************/
+
 .game {
     display: flex;
     justify-content: center;
     align-items: center;
     width: 100%;
-    height: 30em;
+    height: 25em;
     background-color: rgb(167, 51, 111);
 
 }
 
-.player1-board, .player2-board {
-    width: 25em;
-    height: 25em;
+
+/****************GAME-ELEMENTS  *************************/
+
+/* Button */
+
+button {
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    top: 5em;
+    width: 6em;
+    height: 50px;
+    background-color: rgb(159, 24, 94);
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.6em;
+    color: rgb(255, 255, 255);
+    font-weight: bolder;
+    text-shadow: #FFF 0px 0px 15px, #FF2D95 0px 0px 20px, #FF2D95 0px 0px 30px, #FF2D95 0px 0px 40px, #FF2D95 0px 0px 50px, 0px 0px 0px rgba(206,89,55,0);
+    cursor: pointer;
+}
+
+
+
+/* Turn Indicator */
+
+.player1-turn,
+.player2-turn {
+
+
+
+    width: 15em;
+    height: 5em;
+    font-size: 2em;
+    margin: 10px 0 10px 0;
+    text-align: center;
+    color: #FFF;
+    text-shadow: #FF2D95 0px 0px 15px, #FF2D95 0px 0px 20px, #FFF 0px 0px 30px, #FFF 0px 0px 40px, #FFF 0px 0px 50px;
+    filter: blur(1px);
+    animation: MoveUpDown 1.3s linear infinite;
+    position: absolute;
+
+}
+
+.player1-turn span,
+.player2-turn span {
+    position: absolute;
+    top: 0.5em;
+    right: 45%;
+    font-size: 3em;
+}
+
+
+.player1-turn {
+
+    position: absolute;
+    top: 2em;
+    right: 58%;
+}
+
+.player2-turn {
+
+    position: absolute;
+    top: 2em;
+    left: 58%;
+}
+
+
+
+/* Player-Side */
+
+.player1-board,
+.player2-board {
+    width: 33.33333333333%;
+    height: 15em;
     border-radius: 25px;
     margin: 0 5em 0 5em;
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
+    justify-content: center;
     align-items: center;
     color: rgba(255, 255, 255, 1);
+    text-shadow: #FF2D95 0px 0px 15px, #FF2D95 0px 0px 20px, #FFF 0px 0px 30px, #FFF 0px 0px 40px, #FFF 0px 0px 50px;
     background-color: rgba(190, 132, 162, 0.65);
+
+}
+
+.player1-name,
+.player2-name {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.unit-selected {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    text-align: center;
+    font-size: 3em;
+
+}
+
+.unit0,
+.unit1 {
+    width: 4em;
+    height: 3em;
+    margin: auto 0;
+    font-size: 2em;
+    border-radius: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background-color: rgba(167, 51, 111, 0.5);
+    text-shadow: #FF2D95 0px 0px 15px, #FFF 0px 0px 30px, #FFF 0px 0px 40px, #FFF 0px 0px 50px;
+}
+
+
+/****************************MAIN-GAME  ************************/
+
+.game-board {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 33.33333333333%;
+    position: relative;
+}
+
+.field {
+
+    width: 22em;
+    height: 22em;
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+
+
+}
+
+.box {
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    width: 3em;
+    height: 3em;
+    font-size: 2em;
+    margin: 0.1em 0.3em;
+    border-radius: 25px;
+    color: rgba(255, 255, 255, 1);
+    text-shadow: #FF2D95 0px 0px 15px, #FF2D95 0px 0px 20px, #FFF 0px 0px 30px, #FFF 0px 0px 40px, #FFF 0px 0px 50px;
+    background-color: rgba(190, 132, 162, 0.65);
+
+}
+
+
+
+
+.win-line {
+    position: absolute;
+    z-index: 1;
+    
+    left: 50%;
+    /* Centrer horizontalement */
+    top: 50%;
+    /* Centrer verticalement */
+    transform: translate(-50%) rotate(180deg);
+
+    border-width: 4px;
+    border-style: solid;
+    border-image: linear-gradient(90deg, rgba(190, 132, 162, 0.5) 0%, rgba(255, 45, 149, 1) 25%, rgba(255, 45, 149, 1) 50%, rgba(255, 45, 149, 1) 75%, rgba(190, 132, 162, 0.5) 100%) 1;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+
+    width: 141%;
+    /* Ajustez la largeur en pourcentage pour correspondre à la longueur diagonale */
+}
+
+
+.character-selection0, .character-selection1 {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+}
+
+.unit-option {
+    margin: 0 1em;
+    width: 5em;
+    height: 3.5em;
+    text-align: center;
+    background-color: rgba(167, 51, 111, 0.5);
+    border-radius: 25px;
+}
+
+.unit-icon {
+    font-size: 1.5em;
+}
+
+.unit-option:hover {
+    
+    background-color: rgba(252, 247, 249, 0.315);
     
 }
 
-.player1-name, .player2-name {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
+/**************************** JS CLASS  ************************/
 
-.unit1, .unit2 {
-    width: 14em;
-    height: 14em;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: rgba(167, 51, 111, 0.5);
-}
-
-
-.box1 { grid-area: box1 ;}
-.box2 { grid-area: box2 ;}
-.box3 { grid-area: box3 ;}
-.box4 { grid-area: box4 ;}
-.box5 { grid-area: box5 ;}
-.box6 { grid-area: box6 ;}
-.box7 { grid-area: box7 ;}
-.box8 { grid-area: box8 ;}
-.box9 { grid-area: box9 ;}
-
-.game-board {
-    width: 25em;
-    height: 25em;
-    display: grid;
-    grid-template-areas: 
-    'box1 box2 box3'
-    'box4 box5 box6'
-    'box7 box8 box9';
-}
-
-.game-board div {
-
-    width: 7em;
-    height: 7em;
-    background-color: rgba(190, 132, 162, 0.65);
-    border-radius: 25px;
+#error {
+    background-color: rgba(255, 0, 0, 0.637);
 
 }
+
+@keyframes MoveUpDown {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
